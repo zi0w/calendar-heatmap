@@ -6,7 +6,7 @@
   "author": "Jiyoung Woo",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/zi0w/calendar-heatmap"
   },
   "keywords": ["react", "calendar", "heatmap", "visualization", "chart"],
   "type": "module",
@@ -23,7 +23,7 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": ["dist", "README.md", "LICENSE"],
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsup",
