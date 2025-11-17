@@ -58,6 +58,11 @@ export interface CalendarHeatmapProps {
   legend?: CalendarHeatmapLegendOptions;
   container?: CalendarHeatmapContainerOptions;
   typography?: CalendarHeatmapTypographyOptions;
+  onDayClick?: (info: {
+    date: string;
+    value: number | null;
+    inMonth: boolean;
+  }) => void;
 }
 
 // --- 2) Type Guards -----------------------------------------------
@@ -389,6 +394,7 @@ export default function CalendarHeatmap({
   legend,
   container,
   typography,
+  onDayClick,
 }: CalendarHeatmapProps) {
   const end = range?.end;
   const weekStart = range?.weekStart ?? "sun";
@@ -636,6 +642,12 @@ export default function CalendarHeatmap({
               cellTextColor
             );
 
+            const handleDayClick = () => {
+              if (!onDayClick) return;
+              onDayClick({ date: iso, value: valueForCell, inMonth });
+            };
+            const interactive = !!onDayClick && inMonth;
+
             if (!inMonth) {
               return (
                 <div
@@ -652,7 +664,11 @@ export default function CalendarHeatmap({
                 key={iso}
                 role="grid-cell"
                 aria-label={ariaLabel}
-                style={cellStyle}
+                style={{
+                  ...cellStyle,
+                  cursor: interactive ? "pointer" : "default",
+                }}
+                onClick={interactive ? handleDayClick : undefined}
               >
                 <div style={dayContentStyle}>
                   {showDayNumber && (
