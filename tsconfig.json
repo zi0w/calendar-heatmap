@@ -7,11 +7,12 @@
       "moduleResolution": "Bundler",
       "strict": true,
       "skipLibCheck": true,
-      "declaration": true,
-      "emitDeclarationOnly": false,
-      "outDir": "dist",
-      "types": ["react", "react-dom"]
+
+      "noEmit": true,
+      "verbatimModuleSyntax": true,
+      "resolveJsonModule": true
     },
-    "include": ["src", "demo"]
+    "include": ["src", "demo"],
+    "exclude": ["dist", "node_modules"]
   }
   
