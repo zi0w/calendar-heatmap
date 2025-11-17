@@ -4,6 +4,7 @@ A lightweight React **calendar heatmap** component with a **month selector**, **
 Values map to color intensity: lower values render lighter, higher values darker. Fully typed with TypeScript.
 
 > **Peer deps:** `react` (>=18), `react-dom` (>=18)
+<img width="380" height="280" alt="스크린샷 2025-11-17 오전 11 17 29" src="https://github.com/user-attachments/assets/99e45720-b699-434b-8cf3-89f9c26f0ae5" />
 
 ---
 
@@ -158,3 +159,4 @@ export interface CalendarHeatmapProps {
 ## 🐞 Issues & Contributing
 - Please open issues for bugs/feature requests.
 - PRs are welcome!
+
