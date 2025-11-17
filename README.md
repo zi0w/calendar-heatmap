@@ -58,6 +58,7 @@ export default function Example() {
         textColor: "#172343",           // text color inside each day cell
         showDate: true,                 // show day number
         showValue: true,                // show numeric value
+        valueUnit: " kWh",              // 
       }}
 
       labels={{
@@ -73,7 +74,6 @@ export default function Example() {
       }}
 
       container={{
-        // width?: 720 or "100%"
         style: {
           padding: 24,
           borderRadius: 8,
@@ -101,7 +101,7 @@ export type DayValue = {
   value: number | null; // null = no data
 };
 ```
-> Note: Dates must be in local ISO form "YYYY-MM-DD".
+> Note: Dates must be strings in the format **"YYYY-MM-DD"** (e.g., "2025-11-17").
 Missing days are fine; cells without data render using emptyColor.
 
 ### CalendarHeatmapProps
@@ -123,6 +123,7 @@ export interface CalendarHeatmapProps {
     textColor?: string;           // inside-day text color
     showDate?: boolean;           // show day number
     showValue?: boolean;          // show numeric value
+    valueUnit?: string;           //
   };
 
   labels?: {
@@ -138,7 +139,6 @@ export interface CalendarHeatmapProps {
   };
 
   container?: {
-    width?: number | string;      // e.g. 720 or "100%"
     style?: React.CSSProperties;  // outer wrapper styles
   };
 

@@ -25,6 +25,7 @@ export interface CalendarHeatmapCellOptions {
   textColor?: string;
   showDate?: boolean;
   showValue?: boolean;
+  valueUnit?: string;
 }
 
 export interface CalendarHeatmapLabelOptions {
@@ -154,23 +155,27 @@ function resolveCellDimensions(
   return { width: fallback, height: fallback };
 }
 
-function formatDayValue(value: number | null) {
+function formatDayValue(value: number | null, unit?: string) {
   if (!isFiniteNumber(value)) return null;
-  return Math.round(value).toLocaleString();
+  const formatted = Math.round(value).toLocaleString();
+  if (!unit) return formatted;
+  return `${formatted}${unit}`;
 }
 
 function buildCellAriaLabel({
   iso,
   value,
   inMonth,
+  unit,
 }: {
   iso: string;
   value: number | null;
   inMonth: boolean;
+  unit?: string;
 }) {
   if (!inMonth) return `${iso} (다른 달)`;
   if (!isFiniteNumber(value)) return `${iso} 데이터 없음`;
-  const formatted = formatDayValue(value);
+  const formatted = formatDayValue(value, unit);
   return formatted ? `${iso} 값 ${formatted}` : `${iso} 데이터 없음`;
 }
 
@@ -399,6 +404,7 @@ export default function CalendarHeatmap({
   const cellTextColor = cellOptions.textColor ?? "#172343";
   const showDayNumber = cellOptions.showDate ?? true;
   const showDayValue = cellOptions.showValue ?? true;
+  const valueUnit = cellOptions.valueUnit;
   const labelOptions = labels ?? {};
   const showMonthLabels = labelOptions.showMonth ?? true;
   const showWeekdayLabels = labelOptions.showWeekday ?? true;
@@ -611,12 +617,13 @@ export default function CalendarHeatmap({
 
             const dateObj = new Date(iso);
             const dayNum = dateObj.getDate();
-            const formattedValue = formatDayValue(valueForCell);
+            const formattedValue = formatDayValue(valueForCell, valueUnit);
             const shouldShowValue = inMonth && showDayValue && formattedValue;
             const ariaLabel = buildCellAriaLabel({
               iso,
               value: valueForCell,
               inMonth,
+              unit: valueUnit,
             });
             const cellStyle = createDayCellStyle({
               cellWidth,
