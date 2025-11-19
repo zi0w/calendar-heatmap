@@ -6,7 +6,7 @@
   "author": "Jiyoung Woo",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zi0w/calendar-heatmap"
+    "url": "https://github.com/zi0w/calendar-heatmap.git"
   },
   "keywords": [
     "react",
@@ -16,7 +16,6 @@
     "chart"
   ],
   "type": "module",
-  "sideEffects": false,
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,8 +23,7 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "default": "./dist/index.js"
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
@@ -34,12 +32,8 @@
     "LICENSE"
   ],
   "scripts": {
-    "clean": "rm -rf dist",
     "build": "tsup",
-    "typecheck": "tsc --noEmit",
-    "dev": "vite",
-    "preview": "vite preview",
-    "prepublishOnly": "pnpm clean && pnpm typecheck && pnpm build"
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -59,7 +53,6 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=18",
-    "pnpm": ">=9"
+    "node": ">=18"
   }
 }
