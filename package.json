@@ -1,6 +1,6 @@
 {
   "name": "@zi0w/calendar-heatmap",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "React calendar heatmap component with month selector, weekday labels, and legend",
   "license": "MIT",
   "author": "Jiyoung Woo",
