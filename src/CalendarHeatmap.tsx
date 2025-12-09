@@ -20,7 +20,8 @@ export type CalendarHeatmapCellSize =
 export interface CalendarHeatmapCellOptions {
   size?: CalendarHeatmapCellSize;
   gap?: number;
-  baseColor?: string;
+  minColor?: string;
+  maxColor?: string;
   emptyColor?: string;
   textColor?: string;
   showDate?: boolean;
@@ -249,6 +250,14 @@ function clamp01(x: number) {
   return Math.max(0, Math.min(1, x));
 }
 
+function mixColors(minHex: string, maxHex: string, t: number) {
+  const [r1, g1, b1] = hexToRgb(minHex);
+  const [r2, g2, b2] = hexToRgb(maxHex);
+  const ratio = clamp01(t);
+  const mix = (a: number, b: number) => Math.round(a + (b - a) * ratio);
+  return `rgb(${mix(r1, r2)}, ${mix(g1, g2)}, ${mix(b1, b2)})`;
+}
+
 function buildScale(values: number[]) {
   const finiteVals = values.filter((v): v is number => isFiniteNumber(v));
 
@@ -332,13 +341,15 @@ const LEGEND_STEP_COUNT = 4;
 type LegendLevel = { label: string; intensity: number };
 
 function Legend({
-  baseColor,
+  minColor,
+  maxColor,
   levels,
   textColor = "#AEB9E1",
   placement = "bottom",
   margin,
 }: {
-  baseColor: string;
+  minColor: string;
+  maxColor: string;
   levels: LegendLevel[];
   textColor?: string;
   placement?: "top" | "bottom";
@@ -373,7 +384,7 @@ function Legend({
               width: 8,
               height: 8,
               borderRadius: 999,
-              background: mixToWhite(baseColor, intensity),
+              background: mixColors(minColor, maxColor, intensity),
             }}
           />
           <span
@@ -411,7 +422,8 @@ export default function CalendarHeatmap({
     44
   );
   const gap = cellOptions.gap ?? 4;
-  const baseColor = cellOptions.baseColor ?? "#3b82f6";
+  const maxColor = cellOptions.maxColor ?? "#3b82f6";
+  const minColor = cellOptions.minColor ?? mixToWhite(maxColor, 0.15);
   const emptyColor = cellOptions.emptyColor ?? "#FFECEC";
   const cellTextColor = cellOptions.textColor ?? "#172343";
   const showDayNumber = cellOptions.showDate ?? true;
@@ -610,7 +622,8 @@ export default function CalendarHeatmap({
 
         {legendPosition === "top" && showLegend && (
           <Legend
-            baseColor={baseColor}
+            minColor={minColor}
+            maxColor={maxColor}
             levels={legendLevels}
             textColor={textColor}
             placement="top"
@@ -627,7 +640,7 @@ export default function CalendarHeatmap({
               valueForCell == null ? 0 : intensityScale.intensity(valueForCell);
             const hasValue = inMonth && valueForCell != null;
             const fill = hasValue
-              ? mixToWhite(baseColor, intensity)
+              ? mixColors(minColor, maxColor, intensity)
               : emptyColor;
 
             const dateObj = new Date(iso);
@@ -730,7 +743,8 @@ export default function CalendarHeatmap({
 
         {legendPosition === "bottom" && showLegend && (
           <Legend
-            baseColor={baseColor}
+            minColor={minColor}
+            maxColor={maxColor}
             levels={legendLevels}
             textColor={textColor}
             placement="bottom"
