@@ -54,8 +54,8 @@ export default function Example() {
       cell={{
         size: { width: 52, height: 40 }, // or a single number for square cells
         gap: 4,
-        minColor: "#e5f2ff" // lowest value color
-        maxColor: "#0b62d6" // highest value color
+        minColor: "#e5f2ff", // lowest value color
+        maxColor: "#0b62d6", // highest value color
         emptyColor: "#FFECEC", // color for empty/other-month cells
         textColor: "#172343", // text color inside each day cell
         showDate: true, // show day number
