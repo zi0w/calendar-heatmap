@@ -13,11 +13,12 @@ Values map to color intensity: lower values render lighter, higher values darker
 
 - Define start month and optional end month (`YYYY-MM`)
 - Choose week start (`sun` | `mon`)
-- Automatic color scaling (continuous, light → dark) based on data
+- Color scaling interpolates between minColor and maxColor based on data
 - Month dropdown, weekday labels, centered legend
-- Per-cell control: width/height, gap, colors, text visibility
+- Per-cell control: width/height, gap, min/max colors, empty color, text visibility
 - Global typography color
 - TypeScript declarations included (`.d.ts`)
+- Custom spacing: weekday label top margin, legend margin(top/bottom-aware)
 
 ---
 
@@ -53,7 +54,8 @@ export default function Example() {
       cell={{
         size: { width: 52, height: 40 }, // or a single number for square cells
         gap: 4,
-        baseColor: "#3b82f6", // color used for value cells (tinted to white)
+        minColor: "#e5f2ff" // lowest value color
+        maxColor: "#0b62d6" // highest value color
         emptyColor: "#FFECEC", // color for empty/other-month cells
         textColor: "#172343", // text color inside each day cell
         showDate: true, // show day number
@@ -120,7 +122,8 @@ export interface CalendarHeatmapProps {
   cell?: {
     size?: number | { width?: number; height?: number };
     gap?: number; // px
-    baseColor?: string; // base color for value cells
+    minColor?: string; // color for lowest values
+    maxColor?: string; // color for highest values (default #3b82f6)
     emptyColor?: string; // color for empty / out-of-month cells
     textColor?: string; // inside-day text color
     showDate?: boolean; // show day number
@@ -132,12 +135,14 @@ export interface CalendarHeatmapProps {
     showMonth?: boolean; // show month label/dropdown
     showWeekday?: boolean; // show weekday labels under the grid
     weekdayLanguage?: "ko" | "en";
+    weekdayMarginTop?: number; // top margin for weekday labels (default 6)
   };
 
   legend?: {
     show?: boolean;
     position?: "top" | "bottom";
-    labels?: string[]; // default: ["Low","Medium","High","Very High"]
+    labels?: string[]; // default: ["Low", "Medium", "High", "Very High"]
+    margin?: number; // spacing: top legend gets bottom margin, bottom legend gets top margin (default 12)
   };
 
   container?: {
@@ -162,7 +167,7 @@ export interface CalendarHeatmapProps {
 
 - The component collects all finite values to compute [min, max].
 - Each day’s intensity = (value - min) / (max - min) clamped to [0,1].
-- Final swatch = baseColor mixed toward white based on that intensity.
+- Final swatch = linear interpolation between minColor(lowest) and maxColor(highest) using that intensity.
 - Cells with null or out-of-month days use emptyColor.
 
 ---
