@@ -32,12 +32,14 @@ export interface CalendarHeatmapLabelOptions {
   showMonth?: boolean;
   showWeekday?: boolean;
   weekdayLanguage?: WeekdayLanguage;
+  weekdayMarginTop?: number;
 }
 
 export interface CalendarHeatmapLegendOptions {
   show?: boolean;
   position?: "top" | "bottom";
   labels?: string[];
+  margin?: number;
 }
 
 export interface CalendarHeatmapContainerOptions {
@@ -334,13 +336,17 @@ function Legend({
   levels,
   textColor = "#AEB9E1",
   placement = "bottom",
+  margin,
 }: {
   baseColor: string;
   levels: LegendLevel[];
   textColor?: string;
   placement?: "top" | "bottom";
+  margin?: number;
 }) {
   if (levels.length === 0) return null;
+
+  const offset = margin ?? 12;
 
   return (
     <div
@@ -349,8 +355,8 @@ function Legend({
         justifyContent: "center",
         alignItems: "center",
         gap: 24,
-        marginTop: placement === "bottom" ? 12 : 0,
-        marginBottom: placement === "top" ? 12 : 0,
+        marginTop: placement === "bottom" ? offset : 0,
+        marginBottom: placement === "top" ? offset : 0,
       }}
     >
       {levels.map(({ label, intensity }, idx) => (
@@ -415,11 +421,13 @@ export default function CalendarHeatmap({
   const showMonthLabels = labelOptions.showMonth ?? true;
   const showWeekdayLabels = labelOptions.showWeekday ?? true;
   const weekdayLanguage = labelOptions.weekdayLanguage ?? "en";
+  const weekdayMarginTop = labelOptions.weekdayMarginTop ?? 6;
 
   const legendOptions = legend ?? {};
   const showLegend = legendOptions.show ?? true;
   const legendPosition = legendOptions.position ?? "bottom";
   const legendLabels = legendOptions.labels;
+  const legendMargin = legendOptions.margin ?? 12;
 
   const containerOptions = container ?? {};
   const containerStyle = containerOptions.style;
@@ -532,9 +540,9 @@ export default function CalendarHeatmap({
         cellWidth,
         cellHeight,
         gap,
-        overrides: { marginTop: 6 },
+        overrides: { marginTop: weekdayMarginTop },
       }),
-    [cellWidth, cellHeight, gap]
+    [cellWidth, cellHeight, gap, weekdayMarginTop]
   );
 
   const hasMultipleMonths = safeMonths.length > 1;
@@ -606,6 +614,7 @@ export default function CalendarHeatmap({
             levels={legendLevels}
             textColor={textColor}
             placement="top"
+            margin={legendMargin}
           />
         )}
 
@@ -725,6 +734,7 @@ export default function CalendarHeatmap({
             levels={legendLevels}
             textColor={textColor}
             placement="bottom"
+            margin={legendMargin}
           />
         )}
       </div>
