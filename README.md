@@ -1,4 +1,4 @@
-# calendar-heatmap
+# @zi0w/calendar-heatmap
 
 A lightweight React **calendar heatmap** component with a **month selector**, **weekday labels**, and a **legend**.  
 Values map to color intensity: lower values render lighter, higher values darker. Fully typed with TypeScript.
@@ -26,18 +26,18 @@ Values map to color intensity: lower values render lighter, higher values darker
 
 ```bash
 # npm
-npm i calendar-heatmap
+npm i @zi0w/calendar-heatmap
 # pnpm
-pnpm add calendar-heatmap
+pnpm add @zi0w/calendar-heatmap
 # yarn
-yarn add calendar-heatmap
+yarn add @zi0w/calendar-heatmap
 ```
 
 ## 🚀 Quick Start
 
 ```tsx
-import { CalendarHeatmap } from "calendar-heatmap";
-import type { DayValue } from "calendar-heatmap";
+import { CalendarHeatmap } from "@zi0w/calendar-heatmap";
+import type { DayValue } from "@zi0w/calendar-heatmap";
 
 const data: DayValue[] = [
   { date: "2025-08-01", value: 2500 },
